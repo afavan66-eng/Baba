@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP Full Sorgu Paneli</title>
+    <title>VIP FULL PANEL | EFECAN1903</title>
     <style>
         :root {
+            --green: #00ff41;
             --dark: #050505;
-            --tech-green: #00ff41;
             --blue: #0f3460;
-            --error: #ff4b2b;
         }
 
         body {
@@ -21,72 +20,61 @@
             overflow-x: hidden;
         }
 
-        /* VIP Giriş */
+        /* Giriş Ekranı */
         #login-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95);
-            display: flex; justify-content: center; align-items: center;
-            z-index: 2000;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000;
         }
 
         .login-box {
-            background: #111;
-            padding: 40px;
-            border: 2px solid var(--tech-green);
-            box-shadow: 0 0 20px var(--tech-green);
-            text-align: center;
-            border-radius: 10px;
+            background: #111; padding: 40px; border: 2px solid var(--green);
+            text-align: center; border-radius: 10px; box-shadow: 0 0 20px var(--green);
         }
 
-        /* Hamburger */
+        /* Hamburger Menü */
         .menu-btn {
             position: fixed; top: 20px; left: 20px; z-index: 1000;
-            cursor: pointer; background: var(--tech-green);
-            color: black; padding: 10px 15px; border-radius: 5px; font-weight: bold;
+            cursor: pointer; background: var(--green); color: black;
+            padding: 10px 15px; border-radius: 5px; font-weight: bold;
         }
 
         .sidebar {
             position: fixed; left: -280px; width: 260px; height: 100%;
             background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
-            transition: 0.4s; padding-top: 80px; z-index: 999;
-            border-right: 2px solid var(--tech-green);
+            transition: 0.4s; padding-top: 80px; z-index: 999; border-right: 2px solid var(--green);
         }
 
         .sidebar.active { left: 0; }
         .sidebar ul { list-style: none; padding: 0; }
         .sidebar li {
-            padding: 15px 20px; border-bottom: 1px solid #222;
-            cursor: pointer; transition: 0.3s; color: #aaa;
+            padding: 15px 20px; border-bottom: 1px solid #222; cursor: pointer; transition: 0.3s;
         }
-        .sidebar li:hover { background: var(--tech-green); color: black; }
+        .sidebar li:hover { background: var(--green); color: black; }
 
-        /* Panel Alanı */
-        .container { max-width: 800px; margin: 100px auto; padding: 20px; text-align: center; }
+        /* İçerik */
+        .container { max-width: 700px; margin: 100px auto; padding: 20px; text-align: center; }
         .card {
-            background: rgba(20, 20, 20, 0.9); padding: 30px;
-            border-radius: 10px; border: 1px solid #333; display: none;
+            background: rgba(20, 20, 20, 0.9); padding: 30px; border-radius: 10px;
+            border: 1px solid #333; display: none; margin-bottom: 20px;
         }
 
         input {
-            width: 85%; padding: 12px; margin: 10px 0;
-            background: #000; border: 1px solid var(--tech-green);
-            color: var(--tech-green); border-radius: 5px; outline: none;
+            width: 85%; padding: 12px; margin: 8px 0; background: #000;
+            border: 1px solid var(--green); color: var(--green); border-radius: 5px; outline: none;
         }
 
         button {
-            padding: 12px 30px; background: var(--tech-green);
-            color: black; border: none; border-radius: 5px;
-            cursor: pointer; font-weight: bold; margin-top: 10px;
+            padding: 12px 30px; background: var(--green); color: black;
+            border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px;
         }
 
         #results {
-            margin-top: 20px; background: rgba(0,0,0,0.8);
-            border: 1px dashed var(--tech-green); padding: 15px;
-            text-align: left; display: none; max-height: 500px; overflow-y: auto;
+            margin-top: 20px; background: rgba(0,0,0,0.85); border: 1px dashed var(--green);
+            padding: 15px; text-align: left; display: none; max-height: 450px; overflow-y: auto;
         }
 
-        .res-item { border-bottom: 1px solid #333; padding: 10px 0; font-size: 14px; }
+        .res-item { border-bottom: 1px solid #333; padding: 10px 0; font-size: 14px; color: #ddd; }
+        b { color: var(--green); }
     </style>
 </head>
 <body>
@@ -97,20 +85,20 @@
 
     <div id="login-screen">
         <div class="login-box">
-            <h2 style="color:var(--tech-green)">TERMINAL LOGIN</h2>
-            <input type="password" id="vip-pass" placeholder="Enter VIP Password...">
+            <h2 style="color:var(--green)">SYSTEM LOGIN</h2>
+            <input type="password" id="vip-pass" placeholder="VIP Password...">
             <br>
-            <button onclick="checkLogin()">AUTHENTICATE</button>
+            <button onclick="checkLogin()">GİRİŞ YAP</button>
         </div>
     </div>
 
-    <div class="menu-btn" onclick="toggleMenu()">☰ MENU</div>
+    <div class="menu-btn" onclick="toggleMenu()">☰ MENÜ</div>
 
     <nav class="sidebar" id="sidebar">
         <ul>
             <li onclick="showSection('tc-section')">🔍 TC Sorgula</li>
             <li onclick="showSection('adsoyad-section')">👤 Ad Soyad Sorgula</li>
-            <li onclick="showSection('gsm-section')">📞 GSM -> TC</li>
+            <li onclick="showSection('gsmtc-section')">📞 GSM -> TC</li>
             <li onclick="showSection('tcgsm-section')">📱 TC -> GSM</li>
             <li onclick="showSection('isyeri-section')">🏢 İşyeri Bilgisi</li>
             <li onclick="showSection('adres-section')">🏠 Adres Bilgisi</li>
@@ -119,7 +107,7 @@
     </nav>
 
     <div class="container">
-        <h1 id="status-text" style="color:var(--tech-green)">SYSTEM: READY</h1>
+        <h1 id="status-text" style="color:var(--green); text-shadow: 0 0 10px var(--green);">VIP PANEL ONLINE</h1>
 
         <div id="tc-section" class="card">
             <h3>TC KİMLİK SORGULA</h3>
@@ -136,33 +124,33 @@
             <button onclick="apiCall('adsoyad.php', {adi: 'as-ad', soyadi: 'as-soyad', il: 'as-il', ilce: 'as-ilce'})">SORGULA</button>
         </div>
 
-        <div id="gsm-section" class="card">
+        <div id="gsmtc-section" class="card">
             <h3>GSM'DEN TC SORGULA</h3>
-            <input type="text" id="gsm-in" placeholder="5XXXXXXXXX">
-            <button onclick="apiCall('gsmtc.php', {gsm: 'gsm-in'})">SORGULA</button>
+            <input type="text" id="gsmtc-in" placeholder="5XXXXXXXXX">
+            <button onclick="apiCall('gsmtc.php', {gsm: 'gsmtc-in'})">SORGULA</button>
         </div>
 
         <div id="tcgsm-section" class="card">
             <h3>TC'DEN GSM SORGULA</h3>
-            <input type="text" id="tcgsm-in" placeholder="TC Giriniz">
+            <input type="text" id="tcgsm-in" placeholder="TC Numarası">
             <button onclick="apiCall('tcgsm.php', {tc: 'tcgsm-in'})">SORGULA</button>
         </div>
 
         <div id="isyeri-section" class="card">
             <h3>İŞYERİ BİLGİSİ</h3>
-            <input type="text" id="isyeri-in" placeholder="TC Giriniz">
+            <input type="text" id="isyeri-in" placeholder="TC Numarası">
             <button onclick="apiCall('isyeri.php', {tc: 'isyeri-in'})">SORGULA</button>
         </div>
 
         <div id="adres-section" class="card">
             <h3>ADRES BİLGİSİ</h3>
-            <input type="text" id="adres-in" placeholder="TC Giriniz">
+            <input type="text" id="adres-in" placeholder="TC Numarası">
             <button onclick="apiCall('adres.php', {tc: 'adres-in'})">SORGULA</button>
         </div>
 
         <div id="sulale-section" class="card">
             <h3>SÜLALE AĞACI</h3>
-            <input type="text" id="sulale-in" placeholder="TC Giriniz">
+            <input type="text" id="sulale-in" placeholder="TC Numarası">
             <button onclick="apiCall('sulale.php', {tc: 'sulale-in'})">SORGULA</button>
         </div>
 
@@ -170,13 +158,15 @@
     </div>
 
     <script>
+        // Failed to fetch hatasını aşmak için Proxy kullanıyoruz
+        const PROXY = "https://corsproxy.io/?";
         const API_BASE = "https://arastir.sbs/api";
 
         function checkLogin() {
             if(document.getElementById('vip-pass').value === "Efecan1903") {
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('bg-music').play().catch(() => {});
-            } else { alert("WRONG PASSWORD!"); }
+            } else { alert("HATALI ŞİFRE!"); }
         }
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
@@ -191,7 +181,7 @@
         async function apiCall(endpoint, params) {
             const resDiv = document.getElementById('results');
             resDiv.style.display = 'block';
-            resDiv.innerHTML = "🌀 Searching database...";
+            resDiv.innerHTML = "🌀 Veritabanına bağlanılıyor...";
             
             let query = "";
             for (let key in params) {
@@ -200,26 +190,25 @@
             }
 
             try {
-                // Not: Eğer hala hata alıyorsan bu satır CORS engeline takılıyor olabilir.
-                const response = await fetch(`${API_BASE}/${endpoint}?${query}`);
-                if (!response.ok) throw new Error('Network response was not ok');
+                // Proxy ile isteği gönderiyoruz
+                const response = await fetch(`${PROXY}${API_BASE}/${endpoint}?${query}`);
                 const data = await response.json();
                 
                 if(data.success === "true") {
-                    let html = "✅ <b>SONUÇLAR:</b><br><br>";
-                    if(data.data) { // Liste gelirse
+                    let html = "<b>✅ SORGULAMA BAŞARILI:</b><br><br>";
+                    if(data.data && Array.isArray(data.data)) {
                         data.data.forEach(item => {
                             html += `<div class="res-item">`;
-                            for(let k in item) html += `<b>${k}:</b> ${item[k]} | `;
+                            for(let k in item) html += `<b>${k}:</b> ${item[k]} <br>`;
                             html += `</div>`;
                         });
-                    } else { // Tekil gelirse
+                    } else {
                         for(let k in data) if(k !== "success") html += `<b>${k}:</b> ${data[k]}<br>`;
                     }
                     resDiv.innerHTML = html;
                 } else { resDiv.innerHTML = "❌ Kayıt bulunamadı."; }
             } catch (e) {
-                resDiv.innerHTML = `<b style="color:red">ERROR:</b> API bağlantısı başarısız. <br><small>Hata detayı: ${e.message}</small>`;
+                resDiv.innerHTML = `<b style="color:red">SİSTEM HATASI:</b><br>API sunucusuna erişilemedi. API sitesi (arastir.sbs) kapalı olabilir veya proxy engellenmiş olabilir.`;
             }
         }
     </script>

@@ -3,212 +3,240 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP FULL PANEL | EFECAN1903</title>
+    <title>WROX VIP Panel | Efecan1903</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --green: #00ff41;
-            --dark: #050505;
-            --blue: #0f3460;
+            --bg-dark: #0f1014;
+            --sidebar-bg: #16171d;
+            --card-bg: #1c1d24;
+            --accent: #3498db;
+            --text-main: #ffffff;
+            --text-dim: #949ba4;
         }
 
         body {
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            background: var(--dark) url('https://w0.peakpx.com/wallpaper/559/594/壓屏-wallpaper-cyber-circuit-board-tech.jpg') fixed center;
-            background-size: cover;
-            color: white;
-            overflow-x: hidden;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            display: flex;
         }
 
-        /* Giriş Ekranı */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); display: flex; justify-content: center; align-items: center; z-index: 2000;
-        }
-
-        .login-box {
-            background: #111; padding: 40px; border: 2px solid var(--green);
-            text-align: center; border-radius: 10px; box-shadow: 0 0 20px var(--green);
-        }
-
-        /* Hamburger Menü */
-        .menu-btn {
-            position: fixed; top: 20px; left: 20px; z-index: 1000;
-            cursor: pointer; background: var(--green); color: black;
-            padding: 10px 15px; border-radius: 5px; font-weight: bold;
-        }
-
+        /* Sidebar Tasarımı */
         .sidebar {
-            position: fixed; left: -280px; width: 260px; height: 100%;
-            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
-            transition: 0.4s; padding-top: 80px; z-index: 999; border-right: 2px solid var(--green);
+            width: 260px;
+            height: 100vh;
+            background-color: var(--sidebar-bg);
+            position: fixed;
+            border-right: 1px solid #2a2c35;
+            display: flex;
+            flex-direction: column;
         }
 
-        .sidebar.active { left: 0; }
-        .sidebar ul { list-style: none; padding: 0; }
-        .sidebar li {
-            padding: 15px 20px; border-bottom: 1px solid #222; cursor: pointer; transition: 0.3s;
+        .logo {
+            padding: 25px;
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #2a2c35;
+            letter-spacing: 2px;
         }
-        .sidebar li:hover { background: var(--green); color: black; }
 
-        /* İçerik */
-        .container { max-width: 700px; margin: 100px auto; padding: 20px; text-align: center; }
-        .card {
-            background: rgba(20, 20, 20, 0.9); padding: 30px; border-radius: 10px;
-            border: 1px solid #333; display: none; margin-bottom: 20px;
+        .menu-wrapper {
+            padding: 15px 0;
+            overflow-y: auto;
+            flex-grow: 1;
+        }
+
+        .category-title {
+            padding: 10px 25px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-link {
+            padding: 12px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-dim);
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: #23252e;
+            color: var(--text-main);
+        }
+
+        .nav-link i { width: 20px; text-align: center; font-size: 16px; }
+        .nav-link.active { border-left: 3px solid var(--accent); color: var(--accent); }
+
+        /* Ana İçerik */
+        .content {
+            margin-left: 260px;
+            padding: 40px;
+            width: 100%;
+        }
+
+        .search-container {
+            max-width: 700px;
+            margin: 0 auto;
+            display: none;
+        }
+
+        .search-container.active { display: block; }
+
+        .form-card {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            border: 1px solid #2a2c35;
         }
 
         input {
-            width: 85%; padding: 12px; margin: 8px 0; background: #000;
-            border: 1px solid var(--green); color: var(--green); border-radius: 5px; outline: none;
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background: #0f1014;
+            border: 1px solid #333;
+            color: white;
+            border-radius: 6px;
+            box-sizing: border-box;
         }
 
-        button {
-            padding: 12px 30px; background: var(--green); color: black;
-            border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px;
+        .btn-query {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
         }
 
-        #results {
-            margin-top: 20px; background: rgba(0,0,0,0.85); border: 1px dashed var(--green);
-            padding: 15px; text-align: left; display: none; max-height: 450px; overflow-y: auto;
+        #result-box {
+            margin-top: 25px;
+            background: #111218;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid #2a2c35;
+            display: none;
         }
 
-        .res-item { border-bottom: 1px solid #333; padding: 10px 0; font-size: 14px; color: #ddd; }
-        b { color: var(--green); }
+        /* VIP Giriş */
+        #vip-lock {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center;
+        }
+
+        .lock-box {
+            background: var(--card-bg); padding: 40px; border-radius: 15px; text-align: center;
+            border: 1px solid var(--accent); width: 320px;
+        }
     </style>
 </head>
 <body>
 
-    <audio id="bg-music" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
-
-    <div id="login-screen">
-        <div class="login-box">
-            <h2 style="color:var(--green)">SYSTEM LOGIN</h2>
-            <input type="password" id="vip-pass" placeholder="VIP Password...">
-            <br>
-            <button onclick="checkLogin()">GİRİŞ YAP</button>
+    <div id="vip-lock">
+        <div class="lock-box">
+            <h2 style="color: var(--accent); margin-bottom: 20px;">WROX TERMINAL</h2>
+            <input type="password" id="pass" placeholder="VIP Password" style="text-align: center;">
+            <button class="btn-query" onclick="unlock()">Giriş Yap</button>
         </div>
     </div>
 
-    <div class="menu-btn" onclick="toggleMenu()">☰ MENÜ</div>
+    <div class="sidebar">
+        <div class="logo"><i class="fas fa-shield-virus"></i> WROX</div>
+        <div class="menu-wrapper">
+            <div class="nav-link active" onclick="tab('home')"><i class="fas fa-house"></i> Anasayfa</div>
+            
+            <div class="category-title">Sorgular</div>
+            <div class="nav-link" onclick="tab('tc')"><i class="fas fa-id-card"></i> TC Sorgu</div>
+            <div class="nav-link" onclick="tab('adsoyad')"><i class="fas fa-user-group"></i> Ad Soyad Sorgu</div>
+            <div class="nav-link" onclick="tab('adres')"><i class="fas fa-map-location-dot"></i> Adres Sorgu</div>
+            <div class="nav-link" onclick="tab('sulale')"><i class="fas fa-tree"></i> Sülale Sorgu</div>
+            
+            <div class="category-title">WROX Araçlar</div>
+            <div class="nav-link" onclick="tab('tcgsm')"><i class="fas fa-sim-card"></i> TC -> GSM</div>
+            <div class="nav-link" onclick="tab('gsmtc')"><i class="fas fa-mobile-screen"></i> GSM -> TC</div>
+            <div class="nav-link"><i class="fas fa-bomb"></i> WROX Bomber</div>
+        </div>
+    </div>
 
-    <nav class="sidebar" id="sidebar">
-        <ul>
-            <li onclick="showSection('tc-section')">🔍 TC Sorgula</li>
-            <li onclick="showSection('adsoyad-section')">👤 Ad Soyad Sorgula</li>
-            <li onclick="showSection('gsmtc-section')">📞 GSM -> TC</li>
-            <li onclick="showSection('tcgsm-section')">📱 TC -> GSM</li>
-            <li onclick="showSection('isyeri-section')">🏢 İşyeri Bilgisi</li>
-            <li onclick="showSection('adres-section')">🏠 Adres Bilgisi</li>
-            <li onclick="showSection('sulale-section')">👨‍👩‍👧‍👦 Sülale Ağacı</li>
-        </ul>
-    </nav>
-
-    <div class="container">
-        <h1 id="status-text" style="color:var(--green); text-shadow: 0 0 10px var(--green);">VIP PANEL ONLINE</h1>
-
-        <div id="tc-section" class="card">
-            <h3>TC KİMLİK SORGULA</h3>
-            <input type="text" id="tc-in" placeholder="11 Haneli TC">
-            <button onclick="apiCall('tc.php', {tc: 'tc-in'})">SORGULA</button>
+    <div class="content">
+        <div id="home" class="search-container active">
+            <h2>WROX Sistemine Hoş Geldin</h2>
+            <p style="color: var(--text-dim)">Kullanıma başlamak için yan menüyü kullanın.</p>
         </div>
 
-        <div id="adsoyad-section" class="card">
-            <h3>AD SOYAD SORGULA</h3>
-            <input type="text" id="as-ad" placeholder="Ad">
-            <input type="text" id="as-soyad" placeholder="Soyad">
-            <input type="text" id="as-il" placeholder="İl (Opsiyonel)">
-            <input type="text" id="as-ilce" placeholder="İlçe (Opsiyonel)">
-            <button onclick="apiCall('adsoyad.php', {adi: 'as-ad', soyadi: 'as-soyad', il: 'as-il', ilce: 'as-ilce'})">SORGULA</button>
+        <div id="tc" class="search-container">
+            <div class="form-card">
+                <h3>TC Kimlik Sorgulama</h3>
+                <input type="text" id="tc_no" placeholder="TC Giriniz">
+                <button class="btn-query" onclick="doQuery('tc.php', {tc: 'tc_no'})">Sorgula</button>
+            </div>
         </div>
 
-        <div id="gsmtc-section" class="card">
-            <h3>GSM'DEN TC SORGULA</h3>
-            <input type="text" id="gsmtc-in" placeholder="5XXXXXXXXX">
-            <button onclick="apiCall('gsmtc.php', {gsm: 'gsmtc-in'})">SORGULA</button>
+        <div id="adsoyad" class="search-container">
+            <div class="form-card">
+                <h3>Ad Soyad Sorgulama</h3>
+                <input type="text" id="as_ad" placeholder="Ad">
+                <input type="text" id="as_soyad" placeholder="Soyad">
+                <button class="btn-query" onclick="doQuery('adsoyad.php', {adi: 'as_ad', soyadi: 'as_soyad'})">Sorgula</button>
+            </div>
         </div>
 
-        <div id="tcgsm-section" class="card">
-            <h3>TC'DEN GSM SORGULA</h3>
-            <input type="text" id="tcgsm-in" placeholder="TC Numarası">
-            <button onclick="apiCall('tcgsm.php', {tc: 'tcgsm-in'})">SORGULA</button>
-        </div>
-
-        <div id="isyeri-section" class="card">
-            <h3>İŞYERİ BİLGİSİ</h3>
-            <input type="text" id="isyeri-in" placeholder="TC Numarası">
-            <button onclick="apiCall('isyeri.php', {tc: 'isyeri-in'})">SORGULA</button>
-        </div>
-
-        <div id="adres-section" class="card">
-            <h3>ADRES BİLGİSİ</h3>
-            <input type="text" id="adres-in" placeholder="TC Numarası">
-            <button onclick="apiCall('adres.php', {tc: 'adres-in'})">SORGULA</button>
-        </div>
-
-        <div id="sulale-section" class="card">
-            <h3>SÜLALE AĞACI</h3>
-            <input type="text" id="sulale-in" placeholder="TC Numarası">
-            <button onclick="apiCall('sulale.php', {tc: 'sulale-in'})">SORGULA</button>
-        </div>
-
-        <div id="results"></div>
+        <div id="result-box"></div>
     </div>
 
     <script>
-        // Failed to fetch hatasını aşmak için Proxy kullanıyoruz
-        const PROXY = "https://corsproxy.io/?";
-        const API_BASE = "https://arastir.sbs/api";
+        const VIP_PASS = "Efecan1903";
+        const API_URL = "https://arastir.sbs/api";
+        const PROXY = "https://api.allorigins.win/raw?url=";
 
-        function checkLogin() {
-            if(document.getElementById('vip-pass').value === "Efecan1903") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('bg-music').play().catch(() => {});
-            } else { alert("HATALI ŞİFRE!"); }
+        function unlock() {
+            if(document.getElementById('pass').value === VIP_PASS) {
+                document.getElementById('vip-lock').style.display = 'none';
+            } else { alert("Hatalı Parola!"); }
         }
 
-        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
-
-        function showSection(id) {
-            document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
-            document.getElementById(id).style.display = 'block';
-            document.getElementById('results').style.display = 'none';
-            toggleMenu();
+        function tab(name) {
+            document.querySelectorAll('.search-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+            document.getElementById(name).classList.add('active');
+            event.currentTarget.classList.add('active');
+            document.getElementById('result-box').style.display = 'none';
         }
 
-        async function apiCall(endpoint, params) {
-            const resDiv = document.getElementById('results');
-            resDiv.style.display = 'block';
-            resDiv.innerHTML = "🌀 Veritabanına bağlanılıyor...";
-            
-            let query = "";
-            for (let key in params) {
-                let val = document.getElementById(params[key]).value;
-                if(val) query += `${key}=${encodeURIComponent(val)}&`;
-            }
+        async function doQuery(file, fields) {
+            const resBox = document.getElementById('result-box');
+            resBox.style.display = 'block';
+            resBox.innerHTML = "🌀 Veri çekiliyor...";
+
+            let params = new URLSearchParams();
+            for(let key in fields) params.append(key, document.getElementById(fields[key]).value);
 
             try {
-                // Proxy ile isteği gönderiyoruz
-                const response = await fetch(`${PROXY}${API_BASE}/${endpoint}?${query}`);
+                const response = await fetch(`${PROXY}${API_URL}/${file}?${params.toString()}`);
                 const data = await response.json();
-                
                 if(data.success === "true") {
-                    let html = "<b>✅ SORGULAMA BAŞARILI:</b><br><br>";
-                    if(data.data && Array.isArray(data.data)) {
-                        data.data.forEach(item => {
-                            html += `<div class="res-item">`;
-                            for(let k in item) html += `<b>${k}:</b> ${item[k]} <br>`;
-                            html += `</div>`;
-                        });
-                    } else {
-                        for(let k in data) if(k !== "success") html += `<b>${k}:</b> ${data[k]}<br>`;
-                    }
-                    resDiv.innerHTML = html;
-                } else { resDiv.innerHTML = "❌ Kayıt bulunamadı."; }
+                    resBox.innerHTML = `<pre style="color: #2ecc71;">${JSON.stringify(data, null, 2)}</pre>`;
+                } else { resBox.innerHTML = "❌ Sonuç bulunamadı."; }
             } catch (e) {
-                resDiv.innerHTML = `<b style="color:red">SİSTEM HATASI:</b><br>API sunucusuna erişilemedi. API sitesi (arastir.sbs) kapalı olabilir veya proxy engellenmiş olabilir.`;
+                resBox.innerHTML = "⚠️ Sunucu Hatası!";
             }
         }
     </script>

@@ -3,240 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WROX VIP Panel | Efecan1903</title>
+    <title>WROX - VIP Sorgu Paneli</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --bg-dark: #0f1014;
-            --sidebar-bg: #16171d;
-            --card-bg: #1c1d24;
-            --accent: #3498db;
-            --text-main: #ffffff;
-            --text-dim: #949ba4;
+        :root { --bg: #0d0d0d; --side: #161616; --accent: #00ff00; --text: #e0e0e0; }
+        body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; overflow-x: hidden; }
+
+        /* Anahtar Giriş Ekranı */
+        #key-screen { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 10000; }
+        .key-card { background: var(--side); padding: 40px; border-radius: 15px; border: 1px solid #333; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 20px rgba(0,255,0,0.1); }
+        
+        /* Yan Menü (Sidebar) - Mobil Uyumlu */
+        .sidebar { width: 280px; background: var(--side); height: 100vh; border-right: 1px solid #222; position: fixed; left: -280px; transition: 0.3s; z-index: 999; display: flex; flex-direction: column; }
+        .sidebar.active { left: 0; }
+        .logo-area { padding: 25px 20px; font-size: 20px; font-weight: bold; color: var(--accent); border-bottom: 1px solid #222; text-align: center; }
+        
+        /* Hamburger Menü Butonu */
+        .mobile-header { display: none; background: var(--side); padding: 15px; border-bottom: 1px solid #222; position: sticky; top: 0; z-index: 998; align-items: center; }
+        .hamburger { font-size: 24px; color: var(--accent); cursor: pointer; margin-right: 15px; }
+
+        .nav-links { flex: 1; padding-top: 10px; overflow-y: auto; }
+        .nav-item { padding: 15px 25px; display: flex; align-items: center; cursor: pointer; transition: 0.2s; color: #bbb; border-left: 4px solid transparent; }
+        .nav-item i { width: 30px; font-size: 18px; }
+        .nav-item:hover, .nav-item.active { background: #222; color: #fff; border-left-color: var(--accent); }
+
+        /* İçerik Alanı */
+        .main { margin-left: 0; padding: 20px; transition: 0.3s; }
+        @media (min-width: 992px) {
+            .sidebar { left: 0; }
+            .main { margin-left: 280px; }
+            .mobile-header { display: none; }
+        }
+        @media (max-width: 991px) {
+            .mobile-header { display: flex; }
         }
 
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            display: flex;
-        }
-
-        /* Sidebar Tasarımı */
-        .sidebar {
-            width: 260px;
-            height: 100vh;
-            background-color: var(--sidebar-bg);
-            position: fixed;
-            border-right: 1px solid #2a2c35;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .logo {
-            padding: 25px;
-            font-size: 24px;
-            font-weight: 900;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid #2a2c35;
-            letter-spacing: 2px;
-        }
-
-        .menu-wrapper {
-            padding: 15px 0;
-            overflow-y: auto;
-            flex-grow: 1;
-        }
-
-        .category-title {
-            padding: 10px 25px;
-            font-size: 11px;
-            font-weight: 700;
-            color: var(--text-dim);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .nav-link {
-            padding: 12px 25px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            color: var(--text-dim);
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 14px;
-        }
-
-        .nav-link:hover, .nav-link.active {
-            background: #23252e;
-            color: var(--text-main);
-        }
-
-        .nav-link i { width: 20px; text-align: center; font-size: 16px; }
-        .nav-link.active { border-left: 3px solid var(--accent); color: var(--accent); }
-
-        /* Ana İçerik */
-        .content {
-            margin-left: 260px;
-            padding: 40px;
-            width: 100%;
-        }
-
-        .search-container {
-            max-width: 700px;
-            margin: 0 auto;
-            display: none;
-        }
-
-        .search-container.active { display: block; }
-
-        .form-card {
-            background: var(--card-bg);
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-            border: 1px solid #2a2c35;
-        }
-
-        input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            background: #0f1014;
-            border: 1px solid #333;
-            color: white;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
-
-        .btn-query {
-            width: 100%;
-            padding: 14px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        #result-box {
-            margin-top: 25px;
-            background: #111218;
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid #2a2c35;
-            display: none;
-        }
-
-        /* VIP Giriş */
-        #vip-lock {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center;
-        }
-
-        .lock-box {
-            background: var(--card-bg); padding: 40px; border-radius: 15px; text-align: center;
-            border: 1px solid var(--accent); width: 320px;
-        }
+        .container { background: var(--side); padding: 25px; border-radius: 12px; border: 1px solid #222; margin-top: 20px; }
+        input { width: 100%; padding: 15px; background: #000; border: 1px solid #333; color: var(--accent); border-radius: 8px; margin: 10px 0; outline: none; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; background: var(--accent); border: none; color: #000; font-weight: bold; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        
+        .result { margin-top: 25px; background: #000; border-radius: 10px; padding: 20px; border: 1px dashed var(--accent); display: none; }
+        pre { white-space: pre-wrap; word-wrap: break-word; font-size: 14px; color: var(--accent); margin: 0; }
+        
+        /* Overlay (Mobil menü açıkken arkası kararır) */
+        #overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 990; }
+        #overlay.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div id="vip-lock">
-        <div class="lock-box">
-            <h2 style="color: var(--accent); margin-bottom: 20px;">WROX TERMINAL</h2>
-            <input type="password" id="pass" placeholder="VIP Password" style="text-align: center;">
-            <button class="btn-query" onclick="unlock()">Giriş Yap</button>
+    <div id="key-screen">
+        <div class="key-card">
+            <i class="fa-solid fa-key" style="font-size: 40px; color: var(--accent); margin-bottom: 20px;"></i>
+            <h3>ANAHTAR GEREKLİ</h3>
+            <input type="password" id="main-key" placeholder="Anahtarınızı girin...">
+            <button onclick="checkKey()">SİSTEME GİRİŞ YAP</button>
         </div>
     </div>
 
-    <div class="sidebar">
-        <div class="logo"><i class="fas fa-shield-virus"></i> WROX</div>
-        <div class="menu-wrapper">
-            <div class="nav-link active" onclick="tab('home')"><i class="fas fa-house"></i> Anasayfa</div>
-            
-            <div class="category-title">Sorgular</div>
-            <div class="nav-link" onclick="tab('tc')"><i class="fas fa-id-card"></i> TC Sorgu</div>
-            <div class="nav-link" onclick="tab('adsoyad')"><i class="fas fa-user-group"></i> Ad Soyad Sorgu</div>
-            <div class="nav-link" onclick="tab('adres')"><i class="fas fa-map-location-dot"></i> Adres Sorgu</div>
-            <div class="nav-link" onclick="tab('sulale')"><i class="fas fa-tree"></i> Sülale Sorgu</div>
-            
-            <div class="category-title">WROX Araçlar</div>
-            <div class="nav-link" onclick="tab('tcgsm')"><i class="fas fa-sim-card"></i> TC -> GSM</div>
-            <div class="nav-link" onclick="tab('gsmtc')"><i class="fas fa-mobile-screen"></i> GSM -> TC</div>
-            <div class="nav-link"><i class="fas fa-bomb"></i> WROX Bomber</div>
+    <div class="mobile-header" id="mob-head" style="display:none;">
+        <i class="fa-solid fa-bars hamburger" onclick="toggleMenu()"></i>
+        <span>WROX PANEL</span>
+    </div>
+
+    <div id="overlay" onclick="toggleMenu()"></div>
+
+    <div class="sidebar" id="sidebar-ui">
+        <div class="logo-area">
+            WROX Panele Hoş Geldiniz
+        </div>
+        <div class="nav-links">
+            <div class="nav-item active" onclick="tab('tc')"><i class="fa-solid fa-search"></i> TC Sorgu</div>
+            <div class="nav-item" onclick="tab('adsoyad')"><i class="fa-solid fa-users"></i> Ad Soyad Sorgu</div>
+            <div class="nav-item" onclick="tab('adres')"><i class="fa-solid fa-map-location-dot"></i> Adres Sorgu</div>
+            <div class="nav-item" onclick="tab('isyeri')"><i class="fa-solid fa-building"></i> İşyeri Sorgu</div>
+            <div class="nav-item" onclick="tab('sulale')"><i class="fa-solid fa-sitemap"></i> Sülale Sorgu</div>
+            <div class="nav-item" onclick="tab('tcgsm')"><i class="fa-solid fa-mobile-button"></i> TC-GSM Sorgu</div>
+            <div class="nav-item" onclick="tab('gsmtc')"><i class="fa-solid fa-phone"></i> GSM-TC Sorgu</div>
         </div>
     </div>
 
-    <div class="content">
-        <div id="home" class="search-container active">
-            <h2>WROX Sistemine Hoş Geldin</h2>
-            <p style="color: var(--text-dim)">Kullanıma başlamak için yan menüyü kullanın.</p>
-        </div>
-
-        <div id="tc" class="search-container">
-            <div class="form-card">
-                <h3>TC Kimlik Sorgulama</h3>
-                <input type="text" id="tc_no" placeholder="TC Giriniz">
-                <button class="btn-query" onclick="doQuery('tc.php', {tc: 'tc_no'})">Sorgula</button>
+    <div class="main" id="content-ui" style="display:none; visibility: hidden;">
+        <h2 id="title">TC Sorgulama</h2>
+        <div class="container">
+            <div id="inputs">
+                <input type="text" id="v1" placeholder="Sorgulanacak TC No">
             </div>
+            <button onclick="sorgula()">SORGULAMAYI BAŞLAT</button>
         </div>
-
-        <div id="adsoyad" class="search-container">
-            <div class="form-card">
-                <h3>Ad Soyad Sorgulama</h3>
-                <input type="text" id="as_ad" placeholder="Ad">
-                <input type="text" id="as_soyad" placeholder="Soyad">
-                <button class="btn-query" onclick="doQuery('adsoyad.php', {adi: 'as_ad', soyadi: 'as_soyad'})">Sorgula</button>
-            </div>
+        <div id="res-box" class="result">
+            <pre id="output"></pre>
         </div>
-
-        <div id="result-box"></div>
     </div>
 
     <script>
-        const VIP_PASS = "Efecan1903";
-        const API_URL = "https://arastir.sbs/api";
-        const PROXY = "https://api.allorigins.win/raw?url=";
+        let mode = 'tc';
+        const api = "https://arastir.sbs/api";
 
-        function unlock() {
-            if(document.getElementById('pass').value === VIP_PASS) {
-                document.getElementById('vip-lock').style.display = 'none';
-            } else { alert("Hatalı Parola!"); }
+        function checkKey() {
+            const key = document.getElementById('main-key').value;
+            if(key === "Efecan1903") { // Senin özel anahtarın
+                document.getElementById('key-screen').style.display = 'none';
+                document.getElementById('content-ui').style.display = 'block';
+                document.getElementById('content-ui').style.visibility = 'visible';
+                if(window.innerWidth < 992) document.getElementById('mob-head').style.display = 'flex';
+            } else { alert("Yanlış Anahtar!"); }
         }
 
-        function tab(name) {
-            document.querySelectorAll('.search-container').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-            document.getElementById(name).classList.add('active');
+        function toggleMenu() {
+            document.getElementById('sidebar-ui').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function tab(m) {
+            mode = m;
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             event.currentTarget.classList.add('active');
-            document.getElementById('result-box').style.display = 'none';
+            document.getElementById('title').innerText = event.currentTarget.innerText;
+            if(window.innerWidth < 992) toggleMenu();
+            
+            const inp = document.getElementById('inputs');
+            if(m === 'adsoyad') {
+                inp.innerHTML = `<input id="ad" placeholder="Ad"><input id="so" placeholder="Soyad"><input id="il" placeholder="İl"><input id="ce" placeholder="İlçe">`;
+            } else if(m === 'gsmtc') {
+                inp.innerHTML = `<input id="v1" placeholder="Telefon (5xx...)">`;
+            } else {
+                inp.innerHTML = `<input id="v1" placeholder="Sorgulanacak Veriyi Girin">`;
+            }
         }
 
-        async function doQuery(file, fields) {
-            const resBox = document.getElementById('result-box');
-            resBox.style.display = 'block';
-            resBox.innerHTML = "🌀 Veri çekiliyor...";
+        async function sorgula() {
+            let url = `${api}/${mode}.php?`;
+            if(mode === 'adsoyad') {
+                url += `adi=${document.getElementById('ad').value}&soyadi=${document.getElementById('so').value}&il=${document.getElementById('il').value}&ilce=${document.getElementById('ce').value}`;
+            } else if(mode === 'gsmtc') {
+                url += `gsm=${document.getElementById('v1').value}`;
+            } else {
+                url += `tc=${document.getElementById('v1').value}`;
+            }
 
-            let params = new URLSearchParams();
-            for(let key in fields) params.append(key, document.getElementById(fields[key]).value);
+            document.getElementById('res-box').style.display = 'block';
+            document.getElementById('output').innerText = "Veriler getiriliyor...";
 
             try {
-                const response = await fetch(`${PROXY}${API_URL}/${file}?${params.toString()}`);
-                const data = await response.json();
-                if(data.success === "true") {
-                    resBox.innerHTML = `<pre style="color: #2ecc71;">${JSON.stringify(data, null, 2)}</pre>`;
-                } else { resBox.innerHTML = "❌ Sonuç bulunamadı."; }
-            } catch (e) {
-                resBox.innerHTML = "⚠️ Sunucu Hatası!";
+                const r = await fetch(url);
+                const d = await r.json();
+                document.getElementById('output').innerText = JSON.stringify(d, null, 4);
+            } catch(e) {
+                document.getElementById('output').innerText = "Hata: API bağlantısı kurulamadı.";
             }
         }
     </script>

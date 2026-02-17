@@ -3,145 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIP Sorgu Paneli | Efecan1903</title>
+    <title>VIP Full Sorgu Paneli</title>
     <style>
-        /* CSS Başlangıç */
         :root {
-            --dark: #0a0a0a;
-            --accent: #16213e;
+            --dark: #050505;
+            --tech-green: #00ff41;
             --blue: #0f3460;
-            --text: #00ff41; /* Hacker Green */
-            --white: #ffffff;
+            --error: #ff4b2b;
         }
 
         body {
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            background-color: var(--dark);
-            /* Teknoloji Arka Planı */
-            background-image: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://w0.peakpx.com/wallpaper/559/594/壓屏-wallpaper-cyber-circuit-board-tech.jpg');
+            background: var(--dark) url('https://w0.peakpx.com/wallpaper/559/594/壓屏-wallpaper-cyber-circuit-board-tech.jpg') fixed center;
             background-size: cover;
-            background-attachment: fixed;
-            color: var(--white);
+            color: white;
             overflow-x: hidden;
         }
 
-        /* Hamburger Menü */
-        .menu-btn {
+        /* VIP Giriş */
+        #login-screen {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            cursor: pointer;
-            background: var(--text);
-            color: black;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-weight: bold;
-            box-shadow: 0 0 15px var(--text);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 2000;
+        }
+
+        .login-box {
+            background: #111;
+            padding: 40px;
+            border: 2px solid var(--tech-green);
+            box-shadow: 0 0 20px var(--tech-green);
+            text-align: center;
+            border-radius: 10px;
+        }
+
+        /* Hamburger */
+        .menu-btn {
+            position: fixed; top: 20px; left: 20px; z-index: 1000;
+            cursor: pointer; background: var(--tech-green);
+            color: black; padding: 10px 15px; border-radius: 5px; font-weight: bold;
         }
 
         .sidebar {
-            position: fixed;
-            left: -280px;
-            width: 260px;
-            height: 100%;
-            background: rgba(22, 33, 62, 0.95);
-            backdrop-filter: blur(10px);
-            transition: 0.4s;
-            padding-top: 80px;
-            z-index: 999;
-            border-right: 2px solid var(--text);
+            position: fixed; left: -280px; width: 260px; height: 100%;
+            background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px);
+            transition: 0.4s; padding-top: 80px; z-index: 999;
+            border-right: 2px solid var(--tech-green);
         }
 
         .sidebar.active { left: 0; }
         .sidebar ul { list-style: none; padding: 0; }
-        .sidebar ul li {
-            padding: 15px 25px;
-            border-bottom: 1px solid #00ff4133;
-            cursor: pointer;
-            transition: 0.3s;
+        .sidebar li {
+            padding: 15px 20px; border-bottom: 1px solid #222;
+            cursor: pointer; transition: 0.3s; color: #aaa;
         }
-        .sidebar ul li:hover { background: var(--text); color: black; }
+        .sidebar li:hover { background: var(--tech-green); color: black; }
 
-        /* Ana İçerik */
-        .container {
-            max-width: 800px;
-            margin: 100px auto;
-            padding: 20px;
-            text-align: center;
-        }
-
+        /* Panel Alanı */
+        .container { max-width: 800px; margin: 100px auto; padding: 20px; text-align: center; }
         .card {
-            background: rgba(22, 33, 62, 0.8);
-            padding: 30px;
-            border-radius: 15px;
-            border: 1px solid var(--text);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
-            display: none;
+            background: rgba(20, 20, 20, 0.9); padding: 30px;
+            border-radius: 10px; border: 1px solid #333; display: none;
         }
 
         input {
-            width: 80%;
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid var(--text);
-            background: #050505;
-            color: var(--text);
-            font-size: 16px;
+            width: 85%; padding: 12px; margin: 10px 0;
+            background: #000; border: 1px solid var(--tech-green);
+            color: var(--tech-green); border-radius: 5px; outline: none;
         }
 
-        .adsoyad-inputs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
-        .adsoyad-inputs input { width: 45%; }
-
         button {
-            padding: 12px 30px;
-            background: var(--text);
-            color: black;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 15px;
-            box-shadow: 0 0 10px var(--text);
+            padding: 12px 30px; background: var(--tech-green);
+            color: black; border: none; border-radius: 5px;
+            cursor: pointer; font-weight: bold; margin-top: 10px;
         }
 
         #results {
-            margin-top: 30px;
-            text-align: left;
-            background: rgba(15, 52, 96, 0.9);
-            border: 1px dashed var(--text);
-            border-radius: 10px;
-            padding: 15px;
-            display: none;
-            max-height: 400px;
-            overflow-y: auto;
+            margin-top: 20px; background: rgba(0,0,0,0.8);
+            border: 1px dashed var(--tech-green); padding: 15px;
+            text-align: left; display: none; max-height: 500px; overflow-y: auto;
         }
 
-        .result-item {
-            border-bottom: 1px solid #00ff4133;
-            padding: 10px 0;
-        }
-
-        /* Şifre Ekranı */
-        #login-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--dark);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        /* Müzik Kontrol (Opsiyonel Görünürlük) */
-        #audio-player {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            opacity: 0.3;
-        }
+        .res-item { border-bottom: 1px solid #333; padding: 10px 0; font-size: 14px; }
     </style>
 </head>
 <body>
@@ -151,11 +96,11 @@
     </audio>
 
     <div id="login-screen">
-        <div class="card" style="display:block;">
-            <h2>🔐 VIP ACCESS REQUIRED</h2>
-            <input type="password" id="vip-pass" placeholder="Password...">
+        <div class="login-box">
+            <h2 style="color:var(--tech-green)">TERMINAL LOGIN</h2>
+            <input type="password" id="vip-pass" placeholder="Enter VIP Password...">
             <br>
-            <button onclick="checkLogin()">UNLOCK</button>
+            <button onclick="checkLogin()">AUTHENTICATE</button>
         </div>
     </div>
 
@@ -165,35 +110,60 @@
         <ul>
             <li onclick="showSection('tc-section')">🔍 TC Sorgula</li>
             <li onclick="showSection('adsoyad-section')">👤 Ad Soyad Sorgula</li>
-            <li onclick="showSection('gsm-section')">📞 GSM'den TC</li>
-            <li onclick="showSection('extra-section')">🏢 Diğer Sorgular</li>
+            <li onclick="showSection('gsm-section')">📞 GSM -> TC</li>
+            <li onclick="showSection('tcgsm-section')">📱 TC -> GSM</li>
+            <li onclick="showSection('isyeri-section')">🏢 İşyeri Bilgisi</li>
+            <li onclick="showSection('adres-section')">🏠 Adres Bilgisi</li>
+            <li onclick="showSection('sulale-section')">👨‍👩‍👧‍👦 Sülale Ağacı</li>
         </ul>
     </nav>
 
     <div class="container">
-        <h1 id="main-title" style="color: var(--text); text-shadow: 0 0 10px var(--text);">SYSTEM ONLINE</h1>
-        
+        <h1 id="status-text" style="color:var(--tech-green)">SYSTEM: READY</h1>
+
         <div id="tc-section" class="card">
-            <h3>TC Kimlik Sorgula</h3>
-            <input type="text" id="tc-input" placeholder="11 Haneli TC Girin">
-            <button onclick="apiCall('tc.php', 'tc', 'tc-input')">Sorgula</button>
+            <h3>TC KİMLİK SORGULA</h3>
+            <input type="text" id="tc-in" placeholder="11 Haneli TC">
+            <button onclick="apiCall('tc.php', {tc: 'tc-in'})">SORGULA</button>
         </div>
 
         <div id="adsoyad-section" class="card">
-            <h3>Ad Soyad Filtreli Sorgu</h3>
-            <div class="adsoyad-inputs">
-                <input type="text" id="as-ad" placeholder="Ad">
-                <input type="text" id="as-soyad" placeholder="Soyad">
-                <input type="text" id="as-il" placeholder="İl">
-                <input type="text" id="as-ilce" placeholder="İlçe">
-            </div>
-            <button onclick="adSoyadCall()">Sorgula</button>
+            <h3>AD SOYAD SORGULA</h3>
+            <input type="text" id="as-ad" placeholder="Ad">
+            <input type="text" id="as-soyad" placeholder="Soyad">
+            <input type="text" id="as-il" placeholder="İl (Opsiyonel)">
+            <input type="text" id="as-ilce" placeholder="İlçe (Opsiyonel)">
+            <button onclick="apiCall('adsoyad.php', {adi: 'as-ad', soyadi: 'as-soyad', il: 'as-il', ilce: 'as-ilce'})">SORGULA</button>
         </div>
 
         <div id="gsm-section" class="card">
-            <h3>GSM'den TC Sorgula</h3>
-            <input type="text" id="gsm-input" placeholder="5XXXXXXXXX">
-            <button onclick="apiCall('gsmtc.php', 'gsm', 'gsm-input')">Sorgula</button>
+            <h3>GSM'DEN TC SORGULA</h3>
+            <input type="text" id="gsm-in" placeholder="5XXXXXXXXX">
+            <button onclick="apiCall('gsmtc.php', {gsm: 'gsm-in'})">SORGULA</button>
+        </div>
+
+        <div id="tcgsm-section" class="card">
+            <h3>TC'DEN GSM SORGULA</h3>
+            <input type="text" id="tcgsm-in" placeholder="TC Giriniz">
+            <button onclick="apiCall('tcgsm.php', {tc: 'tcgsm-in'})">SORGULA</button>
+        </div>
+
+        <div id="isyeri-section" class="card">
+            <h3>İŞYERİ BİLGİSİ</h3>
+            <input type="text" id="isyeri-in" placeholder="TC Giriniz">
+            <button onclick="apiCall('isyeri.php', {tc: 'isyeri-in'})">SORGULA</button>
+        </div>
+
+        <div id="adres-section" class="card">
+            <h3>ADRES BİLGİSİ</h3>
+            <input type="text" id="adres-in" placeholder="TC Giriniz">
+            <button onclick="apiCall('adres.php', {tc: 'adres-in'})">SORGULA</button>
+        </div>
+
+        <div id="sulale-section" class="card">
+            <h3>SÜLALE AĞACI</h3>
+            <input type="text" id="sulale-in" placeholder="TC Giriniz">
+            <button onclick="apiCall('sulale.php', {tc: 'sulale-in'})">SORGULA</button>
         </div>
 
         <div id="results"></div>
@@ -203,20 +173,13 @@
         const API_BASE = "https://arastir.sbs/api";
 
         function checkLogin() {
-            const pass = document.getElementById('vip-pass').value;
-            const music = document.getElementById('bg-music');
-            if(pass === "Efecan1903") {
+            if(document.getElementById('vip-pass').value === "Efecan1903") {
                 document.getElementById('login-screen').style.display = 'none';
-                // Müzik çalmaya başla (Kullanıcı etkileşimi olduğu için tarayıcı izin verir)
-                music.play().catch(e => console.log("Müzik otomatik başlatılamadı."));
-            } else {
-                alert("ACCESS DENIED!");
-            }
+                document.getElementById('bg-music').play().catch(() => {});
+            } else { alert("WRONG PASSWORD!"); }
         }
 
-        function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('active');
-        }
+        function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
 
         function showSection(id) {
             document.querySelectorAll('.card').forEach(c => c.style.display = 'none');
@@ -225,58 +188,38 @@
             toggleMenu();
         }
 
-        async function apiCall(endpoint, paramName, inputId) {
-            const val = document.getElementById(inputId).value;
+        async function apiCall(endpoint, params) {
             const resDiv = document.getElementById('results');
             resDiv.style.display = 'block';
-            resDiv.innerHTML = "🌀 Processing...";
-
-            try {
-                const response = await fetch(`${API_BASE}/${endpoint}?${paramName}=${val}`);
-                const data = await response.json();
-                renderResults(data);
-            } catch (e) {
-                resDiv.innerHTML = "❌ Connection Error.";
-            }
-        }
-
-        async function adSoyadCall() {
-            const ad = document.getElementById('as-ad').value;
-            const soyad = document.getElementById('as-soyad').value;
-            const il = document.getElementById('as-il').value;
-            const ilce = document.getElementById('as-ilce').value;
+            resDiv.innerHTML = "🌀 Searching database...";
             
-            const resDiv = document.getElementById('results');
-            resDiv.style.display = 'block';
-            resDiv.innerHTML = "🌀 Accessing Database...";
-
-            let url = `${API_BASE}/adsoyad.php?adi=${ad}&soyadi=${soyad}`;
-            if(il) url += `&il=${il}`;
-            if(ilce) url += `&ilce=${ilce}`;
+            let query = "";
+            for (let key in params) {
+                let val = document.getElementById(params[key]).value;
+                if(val) query += `${key}=${encodeURIComponent(val)}&`;
+            }
 
             try {
-                const response = await fetch(url);
+                // Not: Eğer hala hata alıyorsan bu satır CORS engeline takılıyor olabilir.
+                const response = await fetch(`${API_BASE}/${endpoint}?${query}`);
+                if (!response.ok) throw new Error('Network response was not ok');
                 const data = await response.json();
-                renderResults(data);
-            } catch (e) {
-                resDiv.innerHTML = "❌ System Error.";
-            }
-        }
-
-        function renderResults(data) {
-            const resDiv = document.getElementById('results');
-            if(data.success === "true") {
-                if(data.data) {
-                    let html = `<b>Total Records: ${data.data.length}</b><br><br>`;
-                    data.data.forEach(i => {
-                        html += `<div class="result-item">👤 ${i.ADI} ${i.SOYADI}<br>🆔 ${i.TC}<br>📍 ${i.NUFUSIL} / ${i.NUFUSILCE}</div>`;
-                    });
+                
+                if(data.success === "true") {
+                    let html = "✅ <b>SONUÇLAR:</b><br><br>";
+                    if(data.data) { // Liste gelirse
+                        data.data.forEach(item => {
+                            html += `<div class="res-item">`;
+                            for(let k in item) html += `<b>${k}:</b> ${item[k]} | `;
+                            html += `</div>`;
+                        });
+                    } else { // Tekil gelirse
+                        for(let k in data) if(k !== "success") html += `<b>${k}:</b> ${data[k]}<br>`;
+                    }
                     resDiv.innerHTML = html;
-                } else {
-                    resDiv.innerHTML = `✅ <b>FOUND:</b><br>Name: ${data.ADI} ${data.SOYADI}<br>TC: ${data.TC}<br>Born: ${data.DOGUMTARIHI}`;
-                }
-            } else {
-                resDiv.innerHTML = "❌ No Record Found.";
+                } else { resDiv.innerHTML = "❌ Kayıt bulunamadı."; }
+            } catch (e) {
+                resDiv.innerHTML = `<b style="color:red">ERROR:</b> API bağlantısı başarısız. <br><small>Hata detayı: ${e.message}</small>`;
             }
         }
     </script>
